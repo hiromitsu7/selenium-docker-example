@@ -54,6 +54,14 @@ ChromeOptions options = new ChromeOptions();
 WebDriver driver = new ChromeDriver(options);
 ```
 
+## （補足）node を追加する場合
+
+macOS の場合、Safari は webdriver のパスを指定する必要はない。
+
+```bash
+java -Dwebdriver.chrome.driver=/path/to/chromedriver -Dwebdriver.gecko.driver=/path/to/geckodriver -jar selenium-server-4.0.0.jar node --hub http://docker-machine:4444/ --port 5555 --max-sessions 1
+```
+
 ## （補足）コンテナを用いている場合に操作中の画面を見たい場合
 
 7900 番ポートをブラウザで開くと参照できる(headless にしているとダメ)。macOS で docker-machine を使っている場合は以下のコマンドでコマンドでブラウザを開ける。

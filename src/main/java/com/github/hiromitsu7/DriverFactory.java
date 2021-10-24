@@ -21,15 +21,15 @@ public class DriverFactory {
     }
 
     public static WebDriver createLocalChrome() {
-        System.setProperty("webdriver.chrome.driver", "/Users/hiro/Downloads/chromedriver_95");
+        System.setProperty("webdriver.chrome.driver", "/Users/hiro/Downloads/chromedriver");
         ChromeOptions options = new ChromeOptions();
         return new ChromeDriver(options);
     }
 
-    public static WebDriver createRemoteChrome() {
+    public static WebDriver createRemoteChrome(Platform platform) {
         DesiredCapabilities dc = DesiredCapabilities.chrome();
         dc.setBrowserName("chrome");
-        dc.setPlatform(Platform.LINUX);
+        dc.setPlatform(platform);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--disable-gpu", "--window-size=1024,768");
         dc.setCapability(ChromeOptions.CAPABILITY, options);
@@ -42,10 +42,10 @@ public class DriverFactory {
         }
     }
 
-    public static WebDriver createRemoteFirefox() {
+    public static WebDriver createRemoteFirefox(Platform platform) {
         DesiredCapabilities dc = DesiredCapabilities.firefox();
         dc.setBrowserName("firefox");
-        dc.setPlatform(Platform.LINUX);
+        dc.setPlatform(platform);
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless", "--disable-gpu", "--window-size=1024,768");
         dc.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
@@ -58,10 +58,23 @@ public class DriverFactory {
         }
     }
 
-    public static WebDriver createRemoteEdge() {
+    public static WebDriver createRemoteSafari(Platform platform) {
+        DesiredCapabilities dc = DesiredCapabilities.safari();
+        dc.setBrowserName("safari");
+        dc.setPlatform(platform);
+        WebDriver driver;
+        try {
+            driver = new RemoteWebDriver(new URL("http://docker-machine:4444"), dc);
+            return driver;
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static WebDriver createRemoteEdge(Platform platform) {
         DesiredCapabilities dc = DesiredCapabilities.edge();
         dc.setBrowserName("edge");
-        dc.setPlatform(Platform.LINUX);
+        dc.setPlatform(platform);
         EdgeOptions options = new EdgeOptions();
         dc.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
         WebDriver driver;
